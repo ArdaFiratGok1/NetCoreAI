@@ -9,8 +9,9 @@ class Program
     static async Task Main(string[] args)
     {
         var config = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json")
-        .Build();
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
 
         var apiKey = config["OpenAI:ApiKey"];
         Console.WriteLine("Sorunuzu yazınız: ");
