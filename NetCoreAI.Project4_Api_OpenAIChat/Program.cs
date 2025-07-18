@@ -16,51 +16,57 @@ class Program
         var apiKey = config["OpenAI:ApiKey"];
         Console.WriteLine("Sorunuzu yazınız: ");
 
-        var prompt = Console.ReadLine();
+        var chat_messages = new List<Dictionary<string, string>>
+{
+    new() { ["role"] = "system", ["content"] = "Sen tecrübeli bir acil tıp uzmanısın. Acile gelen her hastayı iyi bir şekilde yönetebiliyorsun. Cevaplarını ona göre ver." }
+};
 
-        using var httpclient = new HttpClient();
-        httpclient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
 
-        var requestBody = new // Bu request body'ler API'lere özel oluyor
+        while (true)
         {
-            model = "gpt-3.5-turbo",// burayı değiştirebilirsin
-            messages = new[]
+            Console.Write("Siz:");
+            var prompt = Console.ReadLine();
+
+            chat_messages.Add(new() { ["role"] = "user", ["content"] = prompt }); // Kullanıcı mesajını listeye ekle
+
+            using var httpclient = new HttpClient();
+            httpclient.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+
+            var requestBody = new
             {
-                new {role="system",content="You are a helpful asisstant"},//kibar ol, mühendis gibi cevap ver
-                new {role="user",content=prompt}
+                model = "gpt-4o",
+                messages = chat_messages, // Artık tüm geçmişi gönderiyoruz
+                max_tokens = 500
+            };
 
-            }, 
-            max_tokens = 500
-        };
+            var json = JsonSerializer.Serialize(requestBody);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var json=JsonSerializer.Serialize(requestBody);
-        var content = new StringContent(json,Encoding.UTF8,"application/json");//API'ye istek atmak için string content haline getiriyorum.
-
-        try
-        {
-            var response = await httpclient.PostAsync("https://api.openai.com/v1/chat/completions",content);//URL, OpenAI Chat Completions endpointidir.
-                                                                                                            //Karşıya prompt gönderip cevap beklendiği için Post işlemi yapılır.
-            var responseString = await response.Content.ReadAsStringAsync();//OpenAI'den gelen cevabı string olarak alır.
-
-            if(response.IsSuccessStatusCode)
+            try
             {
-                var result = JsonSerializer.Deserialize<JsonElement>(responseString);//Json elementine dönüştürür.
-                var answer = result.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();//OpenAI'a özgü, GetProperty ile json içinde yazılı olan özelliklerin karşılık geldiği değeri döndürür
-                                                                                                                        //bu durumda JSON formatında gelen cevaptan choices[0].message.content alanı okunur.
-                Console.WriteLine("ChatGPT:");
-                Console.WriteLine(answer);
+                var response = await httpclient.PostAsync("https://api.openai.com/v1/chat/completions", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = JsonSerializer.Deserialize<JsonElement>(responseString);
+                    var answer = result.GetProperty("choices")[0].GetProperty("message").GetProperty("content").GetString();
+
+                    Console.WriteLine("ChatGPT:");
+                    Console.WriteLine(answer);
+
+                    chat_messages.Add(new() { ["role"] = "assistant", ["content"] = answer }); // GPT cevabını da listeye ekle
+                }
+                else
+                {
+                    Console.WriteLine($"Bir hata oluştu: {response.StatusCode}");
+                    Console.WriteLine(responseString);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine($"Bir hata oluştu: {response.StatusCode}");
-                Console.WriteLine(responseString);
+                Console.WriteLine($"Bir hata oluştu: {ex.Message}");
             }
-        }
-        catch (Exception ex)
-        {
-
-            Console.WriteLine($"Bir hata oluştu: {ex.Message}");
-
         }
     }
 }

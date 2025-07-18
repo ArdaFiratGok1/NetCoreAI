@@ -26,8 +26,10 @@ class Program
 
         // HATA BURADAYDI - DÜZELTİLDİ
         // API anahtarını URL'ye sorgu parametresi olarak ekliyoruz.
+
         // En güçlü modeli kullanmak için:
-        var endpoint = $"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key={apiKey}";
+        var endpoint = $"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key={apiKey}";//Gemini 2.5 Pro
+        //var endpoint = $"https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key={apiKey}";//Gemini 2.5 Flash
 
         // BU SATIRA ARTIK GEREK YOK
         // httpClient.DefaultRequestHeaders.Add("X-goog-api-key", apiKey);
@@ -66,6 +68,7 @@ class Program
                     {
                         parts = new[]
                         {
+                            new { text = "Sen tecrübeli bir acil tıp uzmanısın. Acile gelen her hastayı iyi bir şekilde yönetebiliyorsun. Cevaplarını ona göre ver." },//Buna göre cevap ver için sabit bi prompt tanımladım ek olarak
                             new { text = prompt }
                         }
                     }
