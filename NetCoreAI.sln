@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreAI.Project4.5_Gemini
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreAI.Project5_OpenAISpeechToText", "NetCoreAI.Project5_OpenAISpeechToText\NetCoreAI.Project5_OpenAISpeechToText.csproj", "{7C177DA7-CB44-4E3C-A398-06ACC8B98E13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetCoreAI.Project6_DallEImageGeneration", "NetCoreAI.Project6_DallEImageGeneration\NetCoreAI.Project6_DallEImageGeneration.csproj", "{CF246B9A-0ACC-4E1E-92FC-3963636B8CD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{7C177DA7-CB44-4E3C-A398-06ACC8B98E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C177DA7-CB44-4E3C-A398-06ACC8B98E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C177DA7-CB44-4E3C-A398-06ACC8B98E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF246B9A-0ACC-4E1E-92FC-3963636B8CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF246B9A-0ACC-4E1E-92FC-3963636B8CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF246B9A-0ACC-4E1E-92FC-3963636B8CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF246B9A-0ACC-4E1E-92FC-3963636B8CD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
